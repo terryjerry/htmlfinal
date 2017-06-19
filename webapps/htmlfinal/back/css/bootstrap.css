@@ -201,7 +201,7 @@ th {
 
 #left-sidebar{
   float:left;
-  background-color:#CCEEFF;
+  background-color:#030405;
   height: 100%;
   padding-right: 0px;
 　padding-left: 0px;
@@ -4208,6 +4208,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-header {
     position: absolute;
     left: 0.5%;
+    
   }
 }
 .navbar-collapse {
@@ -4623,7 +4624,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #FFFF33;
+  background-color: #1EA5A4;
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {

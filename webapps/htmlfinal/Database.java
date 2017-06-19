@@ -4,6 +4,7 @@ public class Database{
   private Connection con = null;
   private ResultSet rs = null;
   private Statement stmt = null;
+  private PreparedStatement ps = null;
   private String ip = "";
   private String port = "";
   private String url = "";
@@ -25,6 +26,26 @@ public class Database{
       System.out.println(ex);
     }
   }
+
+  public void closeDB() {
+    try {
+      if(stmt != null) {
+        stmt.close();
+      }
+      if(con != null) {
+        con.close();
+      }
+      if(rs != null) {
+        rs.close();
+      }
+      if(ps != null) {
+        ps.close();
+      }
+    }catch(Exception ex){
+      System.out.println(ex);
+    }
+  }
+
   public void query(String sql){
     try{
       rs = stmt.executeQuery(sql);
@@ -32,30 +53,52 @@ public class Database{
       System.out.println(ex);
     }
   }
-  public void insertData(String name, String location, String photo, String description){
+  public void insertData(String category, String lesson, String grade, String department, String field, String codenumber, String points, String lessonweek, String lessonnode, String classroom, String teacher, String people, int haslesson){
     try{
-      String sql = "insert into tra_intro (name, location, photo, description) values(?,?,?,?)";
-      PreparedStatement ps = con.prepareStatement(sql);
-      ps.setString(1, name);
-      ps.setString(2, location);
-      ps.setString(3, photo);
-      ps.setString(4, description);
-      int a = ps.executeUpdate();
+      String sql = "";
+      int a = 0;
+      if(haslesson == 0) {
+        sql = "insert into lesson (年級, 類別, 領域, 選課號碼, 科目名稱, 學分, 上課星期, 上課節次, 教室, 老師, 開課人數) values(?,?,?,?,?,?,?,?,?,?,?)";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, grade);
+        ps.setString(2, category);
+        ps.setString(3, field);
+        ps.setString(4, codenumber);
+        ps.setString(5, lesson);
+        ps.setString(6, points);
+        ps.setString(7, lessonweek);
+        ps.setString(8, lessonnode);
+        ps.setString(9, classroom);
+        ps.setString(10, teacher);
+        ps.setString(11, people);
+        a = ps.executeUpdate();
+      }
+      if(category.equals("必修") || category.equals("選修")) {
+        sql = "insert into " + department + " (選課號碼) values(?)";
+      }
+      ps = con.prepareStatement(sql);
+      ps.setString(1, codenumber);
+      a = ps.executeUpdate();
     }catch(Exception ex){
       System.out.println(ex);
     }
   }
-  public void editData(String id, String name, String location, String photo, String description){
+  public void editData(String sql){
     try{
-      String sql = "update tra_intro set name = '" + name + "' , location = '" + location + "' , description = '" + description + "' , photo = '" + photo + "' where id = " + id;
       int a = stmt.executeUpdate(sql);
     }catch(Exception ex){
       System.out.println(ex);
     }
   }
-  public void deleteData(String id){
+  public void editlesson(String sql) {
+    try {
+      int a = stmt.executeUpdate(sql);
+    }catch(Exception ex){
+      System.out.println(ex);
+    }
+  }
+  public void deleteData(String sql){
     try{
-      String sql = "delete from tra_intro where id = " + id + ";";
       int a = stmt.executeUpdate(sql);
     }catch(Exception ex){
       System.out.println(ex);
